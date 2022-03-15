@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"log"
-	"sync"
 	"time"
 
 	"github.com/go-cmd/cmd"
@@ -24,7 +23,7 @@ type ProxyHandler struct {
 	logsFunc       LogsFunc
 	ShutDown       bool
 	logs           map[int64]*LogsList
-	logsLock       *sync.RWMutex
+	// logsLock       *sync.RWMutex
 }
 
 func (ph *ProxyHandler) AddProxy(p *Proxy) {
@@ -32,26 +31,19 @@ func (ph *ProxyHandler) AddProxy(p *Proxy) {
 	if !ph.proxyList.Add(p) {
 		return
 	}
-	ph.logsLock.RLock()
-	isNil := ph.logs[p.Id] == nil
-	ph.logsLock.RUnlock()
 
-	if isNil {
-		ph.logsLock.Lock()
+	if ph.logs[p.Id] == nil {
 		ph.logs[p.Id] = NewLogsList()
-		ph.logsLock.Unlock()
 	}
 
 	go func() {
 		for {
 			p.Run(ph.clientFilePath, func(time int64, _type, message string) {
-				ph.logsLock.RLock()
 				ph.logs[p.Id].Add(&Log{
 					Time:    time,
 					Type:    _type,
 					Message: message,
 				})
-				ph.logsLock.RUnlock()
 				ph.logsFunc(p.Id, time, _type, message)
 			})
 			var status cmd.Status
@@ -110,8 +102,6 @@ func (ph *ProxyHandler) Stop() {
 }
 
 func (ph *ProxyHandler) GetLogs(id int64) []*Log {
-	ph.logsLock.RLock()
-	defer ph.logsLock.RUnlock()
 	if ph.logs[id] == nil {
 		return []*Log{}
 	}
@@ -119,8 +109,6 @@ func (ph *ProxyHandler) GetLogs(id int64) []*Log {
 }
 
 func (ph *ProxyHandler) DeleteLogs(id int64) {
-	ph.logsLock.RLock()
-	defer ph.logsLock.RUnlock()
 	delete(ph.logs, id)
 }
 
@@ -135,6 +123,5 @@ func NewProxyHandler(
 		runStatusFunc:  runStatusFunc,
 		logsFunc:       logsFunc,
 		logs:           map[int64]*LogsList{},
-		logsLock:       &sync.RWMutex{},
 	}
 }
