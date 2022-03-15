@@ -58,7 +58,7 @@ class Logs extends Component {
       <div className="logs">
         {this.state.logs.map((item) => {
           return (
-            <div className="log text-xs px-1">
+            <div className="log text-xs p-1">
               <p>
                 {new Date(item.time).toLocaleString()} {">"} {item.message}
               </p>
