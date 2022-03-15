@@ -107,7 +107,7 @@ class DownloadClient extends Component {
     } else if (this.state.status === "success") {
       return (
         <DownloadModal
-          text="Download completed successfully!"
+          text="Download finished successfully!"
           positive={{
             text: "OK",
             onClick: (e) => {

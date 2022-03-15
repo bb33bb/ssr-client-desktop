@@ -23,6 +23,8 @@ func (ll *LogsList) GetAll() []*Log {
 }
 
 func (ll *LogsList) Add(log *Log) {
+	ll.lock.Lock()
+	defer ll.lock.Unlock()
 	for ll.list.Len() >= LOG_BUFFER_SIZE {
 		ll.list.Remove(ll.list.Front())
 	}
