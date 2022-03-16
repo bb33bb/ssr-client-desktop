@@ -1,5 +1,5 @@
 # Shadowsocksr Client
-A desktop GUI for [doorbash/ssr-client](https://github.com/doorbash/ssr-client)
+A desktop GUI for https://github.com/doorbash/ssr-client
 
 ## Todo
 - [x] System tray icon
