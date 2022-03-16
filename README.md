@@ -1,8 +1,8 @@
-# Shadowsocksr Desktop Client
-A desktop client for [doorbash/ssr-client](https://github.com/doorbash/ssr-client)
+# Shadowsocksr Client
+A desktop GUI for [doorbash/ssr-client](https://github.com/doorbash/ssr-client)
 
 ## Todo
-- [ ] System tray icon
-- [ ] Run at startup (settings)
+- [x] System tray icon
+- [ ] Run at startup (Settings)
 - [ ] Auto scrolling logs
-- [ ] Better UI: (Adding tooltip, dark mode, ...)
+- [x] Better UI: (Adding tooltip, ...)
