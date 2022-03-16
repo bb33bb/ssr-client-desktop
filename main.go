@@ -21,14 +21,14 @@ var assets embed.FS
 var icon []byte
 
 const (
-	githubUrl        = "https://github.com/doorbash/ssr-client-desktop"
-	clientRepoUrl    = "https://github.com/doorbash/ssr-client"
-	clientTagVersion = "v1.4.3"
-	dbName           = "db.sqlite"
+	GITHUB_URL         = "https://github.com/doorbash/ssr-client-desktop"
+	CLIENT_REPO_URL    = "https://github.com/doorbash/ssr-client"
+	CLIENT_TAG_VERSION = "v1.4.3"
+	DB_NAME            = "db.sqlite"
+	APP_TITLE          = "Shadowsocksr Client"
 )
 
 func main() {
-
 	var clientFileName string
 	switch runtime.GOOS {
 	case "windows":
@@ -40,19 +40,19 @@ func main() {
 	}
 
 	app := NewApp(
-		githubUrl,
+		GITHUB_URL,
 		fmt.Sprintf(
 			"%s/releases/download/%s",
-			clientRepoUrl,
-			clientTagVersion,
+			CLIENT_REPO_URL,
+			CLIENT_TAG_VERSION,
 		),
 		clientFileName,
 		".",
-		dbName,
+		DB_NAME,
 	)
 
 	err := wails.Run(&options.App{
-		Title:             "ssr-client-desktop",
+		Title:             APP_TITLE,
 		Width:             480,
 		Height:            800,
 		MinWidth:          480,
@@ -63,7 +63,7 @@ func main() {
 		Fullscreen:        false,
 		Frameless:         false,
 		StartHidden:       false,
-		HideWindowOnClose: false,
+		HideWindowOnClose: true,
 		RGBA:              &options.RGBA{R: 33, G: 37, B: 43, A: 255},
 		Assets:            assets,
 		LogLevel:          logger.DEBUG,
@@ -77,14 +77,14 @@ func main() {
 		Windows: &windows.Options{
 			WebviewIsTransparent: false,
 			WindowIsTranslucent:  false,
-			DisableWindowIcon:    true,
+			DisableWindowIcon:    false,
 		},
 		Mac: &mac.Options{
 			TitleBar:             mac.TitleBarHiddenInset(),
 			WebviewIsTransparent: true,
 			WindowIsTranslucent:  true,
 			About: &mac.AboutInfo{
-				Title:   "Shadowsocksr Client",
+				Title:   APP_TITLE,
 				Message: "",
 				Icon:    icon,
 			},

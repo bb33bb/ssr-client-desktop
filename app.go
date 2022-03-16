@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/getlantern/systray"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -59,6 +60,25 @@ func (b *App) startup(ctx context.Context) {
 		runtime.EventsEmit(b.ctx, "run-log", id, time, _type, message)
 	})
 	b.proxyHandler.Start(b.ctx, b.dbHandler)
+	systray.Run(func() {
+		systray.SetIcon(Icon)
+		systray.SetTitle(APP_TITLE)
+		systray.SetTooltip(APP_TITLE)
+		mOpen := systray.AddMenuItem(fmt.Sprintf("Open %s", APP_TITLE), "Open App")
+		mQuit := systray.AddMenuItem("Exit", "Exit app")
+		go func() {
+			for {
+				select {
+				case <-mQuit.ClickedCh:
+					runtime.Quit(b.ctx)
+				case <-mOpen.ClickedCh:
+					runtime.WindowShow(b.ctx)
+				}
+			}
+		}()
+	}, func() {
+
+	})
 }
 
 // domReady is called after the front-end dom has been loaded

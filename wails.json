@@ -1,5 +1,5 @@
 {
-  "name": "Shadowsocksr Desktop Client",
+  "name": "SSR Client",
   "frontend:build": "",
   "frontend:install": "",
   "frontend:dev": "",
@@ -14,13 +14,13 @@
   "runNonNativeBuildHooks": false,
   "postBuildHooks": null,
   "Author": {
-    "name": "Milad Doorbash",
-    "email": "milad.doorbash@gmail.com"
+    "name": "",
+    "email": ""
   },
   "Info": {
     "companyName": "ssr-client-desktop",
     "productName": "ssr-client-desktop",
-    "productVersion": "1.0.0",
+    "productVersion": "1.1",
     "copyright": "Copyright 2022",
     "comments": "Built using Wails (https://wails.app)"
   },
