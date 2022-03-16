@@ -105,7 +105,7 @@ class ProxyList extends Component {
           return (
             <div
               key={item.id}
-              className="proxy-item cursor-pointer border-b-2 text-lg grid items-center justify-center pl-2"
+              className="proxy-item cursor-pointer border-b-2 text-lg grid items-center justify-center pl-3"
               onClick={(e) => {
                 this.props.navigate("/logs", {
                   state: {
@@ -128,7 +128,7 @@ class ProxyList extends Component {
                   <path d="M24 0l-6 22-8.129-7.239 7.802-8.234-10.458 7.227-7.215-1.754 24-12zm-15 16.668v7.332l3.258-4.431-3.258-2.901z" />
                 </svg>
               </div>
-              <div className="my-5 w-[90%]">
+              <div className="my-4 w-[90%]">
                 <div className="mb-[0.125rem] truncate">{item.name}</div>
                 <div className="flex justify-start space-x-2 items-center text-xs text-slate-600">
                   {item.status === 0 ? (
