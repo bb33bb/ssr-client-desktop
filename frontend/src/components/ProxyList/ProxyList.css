@@ -1,19 +1,32 @@
 .proxy-item {
-    grid-template-columns: 0.25em 1fr 1fr;
+  grid-template-columns: 3em 50% 1fr;
 }
 
 .proxy-icons {
-    visibility: hidden;
-    opacity: 0;
-    transition-duration: 200ms;
-    @apply my-4 mr-4 flex justify-end items-center space-x-3;
+  visibility: hidden;
+  opacity: 0;
+  transition-duration: 200ms;
+  @apply my-4 mr-4 flex justify-end items-center space-x-3;
 }
 
 .proxy-item:hover > .proxy-icons {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }
 
 .proxy-icon {
-    @apply cursor-pointer text-blue-500 w-8 h-8 border-2 border-blue-500 rounded-full flex items-center justify-center hover:text-blue-700 transition;
+  @apply cursor-pointer text-blue-500 w-8 h-8 border-2 border-blue-500 rounded-full flex items-center justify-center hover:text-blue-700 transition;
+}
+
+@keyframes jumpIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.tooltip-custom {
+  animation: jumpIn 0.3s;
 }

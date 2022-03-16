@@ -1,7 +1,7 @@
 .header {
     background-color: #2496ed;
     font-family: RobotoMedium, sans-serif;
-    @apply py-3 px-5 flex justify-between items-center text-white;
+    @apply py-3 px-5 flex justify-between items-center text-white shadow-[#444444AA] shadow;
 }
 
 .header-title {

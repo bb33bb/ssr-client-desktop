@@ -44,7 +44,7 @@
 }
 
 .btn-floating {
-  @apply cursor-pointer inline-block rounded-full bg-blue-600 text-white leading-normal uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out;
+  @apply cursor-pointer inline-block rounded-full bg-blue-600 text-white leading-normal uppercase shadow-[#444444AA] shadow-md hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-[#444444AA] active:shadow-sm transition duration-150 ease-in-out;
 }
 
 body {

@@ -70,7 +70,6 @@ func (b *App) startup(ctx context.Context) {
 			for {
 				select {
 				case <-mQuit.ClickedCh:
-					runtime.Quit(b.ctx)
 					systray.Quit()
 				case <-mOpen.ClickedCh:
 					runtime.WindowShow(b.ctx)
@@ -78,7 +77,7 @@ func (b *App) startup(ctx context.Context) {
 			}
 		}()
 	}, func() {
-
+		runtime.Quit(b.ctx)
 	})
 }
 

@@ -1,13 +1,22 @@
-import { Add, PlayArrow, Stop, Delete, Edit } from "@material-ui/icons"
+import {
+  Add,
+  PlayArrow,
+  Stop,
+  Delete,
+  Edit,
+  Transform,
+} from "@material-ui/icons"
 import { Component } from "react"
 import { useNavigate } from "react-router-dom"
 import "./ProxyList.css"
+import "tw-elements"
 
 class ProxyList extends Component {
   constructor(props) {
     super(props)
     props.setConfig("Shadowsocksr Client", false, "#00000000")
     this.onEvent = this.onEvent.bind(this)
+    this.tooltipList = []
     this.state = {
       proxies: [],
     }
@@ -52,8 +61,40 @@ class ProxyList extends Component {
   }
 
   componentWillUnmount() {
+    this.tooltipList.forEach((tooltip) => {
+      tooltip.dispose()
+    })
     if (!window.runtime) return
     window.runtime.EventsOff("run-status")
+  }
+
+  componentDidUpdate() {
+    var tooltipTriggerList = [].slice.call(
+      document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    )
+
+    this.tooltipList.forEach((tooltip) => {
+      tooltip.dispose()
+    })
+
+    this.tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new window.Tooltip(tooltipTriggerEl)
+    })
+
+    this.tooltipList.forEach((tooltip) => {
+      const config = tooltip._config
+      config.fallbackPlacements = ["bottom"]
+      config.offset = "0,15"
+      config.placement = "bottom"
+      config.animation = false
+      const element = tooltip.getTipElement()
+      element.classList.add("tooltip-custom")
+      const innerElement = element.querySelector(".tooltip-inner")
+      innerElement.style.backgroundColor = "#383838"
+      innerElement.style.padding = "0.3em 0.8em"
+      innerElement.style.fontSize = "0.8rem"
+      innerElement.style.fontFamily = "RobotoMedium, sans-serif"
+    })
   }
 
   render() {
@@ -63,7 +104,7 @@ class ProxyList extends Component {
           return (
             <div
               key={item.id}
-              className="proxy-item cursor-pointer border-b-2 text-lg grid items-center justify-center"
+              className="proxy-item cursor-pointer border-b-2 text-lg grid items-center justify-center pl-2"
               onClick={(e) => {
                 this.props.navigate("/logs", {
                   state: {
@@ -73,16 +114,20 @@ class ProxyList extends Component {
                 })
               }}
             >
-              {item.status === 0 ? (
-                <div className="bg-gray-600 h-full"></div>
-              ) : item.run_status === "running" ? (
-                <div className="bg-green-500 h-full"></div>
-              ) : item.run_status === "error" ? (
-                <div className="bg-red-500 h-full"></div>
-              ) : (
-                <div className="bg-gray-600 h-full"></div>
-              )}
-              <div className="my-4 ml-4 w-[90%]">
+              <div
+                className="scale-50"
+                style={{
+                  fill:
+                    item.status === 0 || item.run_status !== "running"
+                      ? "#c2c2c2"
+                      : "#54d1b0",
+                }}
+              >
+                <svg style={{ transform: "scale(-1,1)" }} viewBox="0 0 24 24">
+                  <path d="M24 0l-6 22-8.129-7.239 7.802-8.234-10.458 7.227-7.215-1.754 24-12zm-15 16.668v7.332l3.258-4.431-3.258-2.901z" />
+                </svg>
+              </div>
+              <div className="my-5 w-[90%]">
                 <div className="mb-[0.125rem] truncate">{item.name}</div>
                 <div className="flex justify-start space-x-2 items-center text-xs text-slate-600">
                   {item.status === 0 ? (
@@ -99,6 +144,8 @@ class ProxyList extends Component {
               </div>
               <div className="proxy-icons">
                 <div
+                  data-bs-toggle="tooltip"
+                  title={item.status === 0 ? "RUN" : "STOP"}
                   className="proxy-icon"
                   onClick={(e) => {
                     e.stopPropagation()
@@ -136,6 +183,8 @@ class ProxyList extends Component {
                   )}
                 </div>
                 <div
+                  data-bs-toggle="tooltip"
+                  title="DUPLICATE"
                   className="proxy-icon"
                   onClick={(e) => {
                     e.stopPropagation()
@@ -150,6 +199,8 @@ class ProxyList extends Component {
                   <Add style={{ fontSize: "1.6rem" }} />
                 </div>
                 <div
+                  data-bs-toggle="tooltip"
+                  title="EDIT"
                   className="proxy-icon"
                   onClick={(e) => {
                     e.stopPropagation()
@@ -159,6 +210,9 @@ class ProxyList extends Component {
                   <Edit style={{ fontSize: "1.3rem" }} />
                 </div>
                 <div
+                  data-bs-toggle="tooltip"
+                  title="DELETE"
+                  offset={1000}
                   className="proxy-icon"
                   onClick={(e) => {
                     e.stopPropagation()
