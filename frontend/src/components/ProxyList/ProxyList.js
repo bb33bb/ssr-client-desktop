@@ -16,7 +16,6 @@ class ProxyList extends Component {
     super(props)
     props.setConfig("Shadowsocksr Client", false, "#00000000")
     this.onEvent = this.onEvent.bind(this)
-    this.tooltipList = []
     this.state = {
       proxies: [],
     }
@@ -61,21 +60,24 @@ class ProxyList extends Component {
   }
 
   componentWillUnmount() {
-    this.tooltipList.forEach((tooltip) => {
-      tooltip.dispose()
-    })
+    if (this.tooltipList) {
+      this.tooltipList.forEach((tooltip) => {
+        tooltip.dispose()
+      })
+    }
     if (!window.runtime) return
     window.runtime.EventsOff("run-status")
   }
 
   componentDidUpdate() {
+    if (this.tooltipList) {
+      this.tooltipList.forEach((tooltip) => {
+        tooltip.dispose()
+      })
+    }
     var tooltipTriggerList = [].slice.call(
       document.querySelectorAll('[data-bs-toggle="tooltip"]')
     )
-
-    this.tooltipList.forEach((tooltip) => {
-      tooltip.dispose()
-    })
 
     this.tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
       return new window.Tooltip(tooltipTriggerEl)
@@ -85,7 +87,6 @@ class ProxyList extends Component {
       const config = tooltip._config
       config.fallbackPlacements = ["bottom"]
       config.offset = "0,15"
-      config.placement = "bottom"
       config.animation = false
       const element = tooltip.getTipElement()
       element.classList.add("tooltip-custom")
@@ -145,6 +146,7 @@ class ProxyList extends Component {
               <div className="proxy-icons">
                 <div
                   data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
                   title={item.status === 0 ? "RUN" : "STOP"}
                   className="proxy-icon"
                   onClick={(e) => {
@@ -184,6 +186,7 @@ class ProxyList extends Component {
                 </div>
                 <div
                   data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
                   title="DUPLICATE"
                   className="proxy-icon"
                   onClick={(e) => {
@@ -200,6 +203,7 @@ class ProxyList extends Component {
                 </div>
                 <div
                   data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
                   title="EDIT"
                   className="proxy-icon"
                   onClick={(e) => {
@@ -211,6 +215,7 @@ class ProxyList extends Component {
                 </div>
                 <div
                   data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
                   title="DELETE"
                   offset={1000}
                   className="proxy-icon"
@@ -240,6 +245,9 @@ class ProxyList extends Component {
           )
         })}
         <div
+          data-bs-toggle="tooltip"
+          title="NEW PROXY"
+          data-bs-placement="left"
           className="btn-floating absolute right-8 bottom-8"
           onClick={(e) => {
             e.stopPropagation()
