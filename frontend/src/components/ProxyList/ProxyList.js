@@ -4,7 +4,6 @@ import {
   Stop,
   Delete,
   Edit,
-  Transform,
 } from "@material-ui/icons"
 import { Component } from "react"
 import { useNavigate } from "react-router-dom"
@@ -60,42 +59,12 @@ class ProxyList extends Component {
   }
 
   componentWillUnmount() {
-    if (this.tooltipList) {
-      this.tooltipList.forEach((tooltip) => {
-        tooltip.dispose()
-      })
-    }
     if (!window.runtime) return
     window.runtime.EventsOff("run-status")
   }
 
   componentDidUpdate() {
-    if (this.tooltipList) {
-      this.tooltipList.forEach((tooltip) => {
-        tooltip.dispose()
-      })
-    }
-    var tooltipTriggerList = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    )
-
-    this.tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new window.Tooltip(tooltipTriggerEl)
-    })
-
-    this.tooltipList.forEach((tooltip) => {
-      const config = tooltip._config
-      config.fallbackPlacements = ["bottom"]
-      config.offset = "0,15"
-      config.animation = false
-      const element = tooltip.getTipElement()
-      element.classList.add("tooltip-custom")
-      const innerElement = element.querySelector(".tooltip-inner")
-      innerElement.style.backgroundColor = "#383838"
-      innerElement.style.padding = "0.3em 0.8em"
-      innerElement.style.fontSize = "0.8rem"
-      innerElement.style.fontFamily = "RobotoMedium, sans-serif"
-    })
+    this.props.updateTooltips()
   }
 
   render() {
@@ -105,7 +74,7 @@ class ProxyList extends Component {
           return (
             <div
               key={item.id}
-              className="proxy-item cursor-pointer border-b-2 text-lg grid items-center justify-center pl-3"
+              className="proxy-item cursor-pointer border-b-2 text-lg grid items-center justify-center pl-1"
               onClick={(e) => {
                 this.props.navigate("/logs", {
                   state: {
