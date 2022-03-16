@@ -64,13 +64,14 @@ func (b *App) startup(ctx context.Context) {
 		systray.SetIcon(Icon)
 		systray.SetTitle(APP_TITLE)
 		systray.SetTooltip(APP_TITLE)
-		mOpen := systray.AddMenuItem(fmt.Sprintf("Open %s", APP_TITLE), "Open App")
+		mOpen := systray.AddMenuItem(fmt.Sprintf("Show %s", APP_TITLE), "Show App")
 		mQuit := systray.AddMenuItem("Exit", "Exit app")
 		go func() {
 			for {
 				select {
 				case <-mQuit.ClickedCh:
 					runtime.Quit(b.ctx)
+					systray.Quit()
 				case <-mOpen.ClickedCh:
 					runtime.WindowShow(b.ctx)
 				}
