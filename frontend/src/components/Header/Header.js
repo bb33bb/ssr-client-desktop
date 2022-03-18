@@ -2,14 +2,14 @@ import { Settings, GitHub, ArrowBack } from "@material-ui/icons"
 import { useLocation, useNavigate } from "react-router-dom"
 import "./Header.css"
 
-import React, { Component } from "react"
+import React, { Component, useContext } from "react"
+import AppContext from "../../contexts/AppContext"
 
 class Header extends Component {
-  
   componentDidUpdate() {
     this.props.updateTooltips()
   }
-  
+
   render() {
     return (
       <header className="header">
@@ -65,9 +65,13 @@ class Header extends Component {
   }
 }
 
-export default function (props) {
-  const navigate = useNavigate()
-  const location = useLocation()
-
-  return <Header {...props} navigate={navigate} location={location} />
+export default (props) => {
+  return (
+    <Header
+      {...props}
+      navigate={useNavigate()}
+      location={useLocation()}
+      {...useContext(AppContext)}
+    />
+  )
 }

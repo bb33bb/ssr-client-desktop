@@ -1,5 +1,6 @@
-import React, { Component } from "react"
+import React, { Component, useContext } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import AppContext from "../../contexts/AppContext"
 import "./Logs.css"
 
 const MAX_LINES = 50
@@ -70,9 +71,13 @@ class Logs extends Component {
   }
 }
 
-export default function (props) {
-  const navigate = useNavigate()
-  const location = useLocation()
-
-  return <Logs {...props} navigate={navigate} location={location} />
+export default (props) => {
+  return (
+    <Logs
+      {...props}
+      navigate={useNavigate()}
+      location={useLocation()}
+      {...useContext(AppContext)}
+    />
+  )
 }

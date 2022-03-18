@@ -3,12 +3,13 @@ import "./App.css"
 import Header from "./components/Header/Header"
 import ProxyList from "./components/ProxyList/ProxyList"
 import NewProxy from "./components/NewProxy/NewProxy"
-import { Routes, Route, BrowserRouter } from "react-router-dom"
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom"
 import DownloadClient from "./components/DownloadClient/DownloadClient"
 import Settings from "./components/Settings/Settings"
 import Logs from "./components/Logs/Logs"
 
 import React, { Component } from "react"
+import AppContext from "./contexts/AppContext"
 
 export default class App extends Component {
   constructor(props) {
@@ -36,26 +37,23 @@ export default class App extends Component {
         tooltip.dispose()
       })
     }
-    var tooltipTriggerList = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    )
 
-    this.tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new window.Tooltip(tooltipTriggerEl)
-    })
+    this.tooltipList = [].slice
+      .call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      .map(function (tooltipTriggerEl) {
+        return new window.Tooltip(tooltipTriggerEl)
+      })
 
     this.tooltipList.forEach((tooltip) => {
-      const config = tooltip._config
-      config.fallbackPlacements = ["bottom"]
-      config.offset = "0,15"
-      config.animation = false
-      const element = tooltip.getTipElement()
-      element.classList.add("tooltip-custom")
-      const innerElement = element.querySelector(".tooltip-inner")
-      innerElement.style.backgroundColor = "#383838"
-      innerElement.style.padding = "0.3em 0.8em"
-      innerElement.style.fontSize = "0.8rem"
-      innerElement.style.fontFamily = "RobotoMedium, sans-serif"
+      tooltip._config = {
+        ...tooltip._config,
+        fallbackPlacements: ["bottom"],
+        offset: "0,15",
+      }
+      tooltip
+        .getTipElement()
+        .querySelector(".tooltip-inner")
+        .classList.add("custom-tooltip")
     })
   }
 
@@ -70,49 +68,30 @@ export default class App extends Component {
   render() {
     return (
       <div className="app">
-        <BrowserRouter>
-          <Header
-            title={this.state.title}
-            showBackButton={this.state.showBackButton}
-            updateTooltips={this.updateTooltips}
-          />
-          <div
-            className="app-content"
-            style={{ backgroundColor: this.state.bgColor }}
+        <Router>
+          <AppContext.Provider
+            value={{
+              ...this.state,
+              setConfig: this.setConfig,
+              updateTooltips: this.updateTooltips,
+            }}
           >
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <ProxyList
-                    setConfig={this.setConfig}
-                    updateTooltips={this.updateTooltips}
-                  />
-                }
-              />
-              <Route
-                path="/new-proxy"
-                element={<NewProxy setConfig={this.setConfig} />}
-              />
-              <Route
-                path="/edit-proxy"
-                element={<NewProxy setConfig={this.setConfig} />}
-              />
-              <Route
-                path="/download"
-                element={<DownloadClient setConfig={this.setConfig} />}
-              />
-              <Route
-                path="/settings"
-                element={<Settings setConfig={this.setConfig} />}
-              />
-              <Route
-                path="/logs"
-                element={<Logs setConfig={this.setConfig} />}
-              />
-            </Routes>
-          </div>
-        </BrowserRouter>
+            <Header />
+            <div
+              className="app-content"
+              style={{ backgroundColor: this.state.bgColor }}
+            >
+              <Routes>
+                <Route path="/" element={<ProxyList />} />
+                <Route path="/new-proxy" element={<NewProxy />} />
+                <Route path="/edit-proxy" element={<NewProxy />} />
+                <Route path="/download" element={<DownloadClient />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/logs" element={<Logs />} />
+              </Routes>
+            </div>
+          </AppContext.Provider>
+        </Router>
       </div>
     )
   }

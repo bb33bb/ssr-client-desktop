@@ -1,6 +1,7 @@
-import React, { Component } from "react"
+import React, { Component, useContext } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import "tw-elements"
+import AppContext from "../../contexts/AppContext"
 import "./NewProxy.css"
 
 class NewProxy extends Component {
@@ -267,9 +268,13 @@ class NewProxy extends Component {
   }
 }
 
-export default function (props) {
-  const navigate = useNavigate()
-  const location = useLocation()
-
-  return <NewProxy {...props} navigate={navigate} location={location} />
+export default (props) => {
+  return (
+    <NewProxy
+      {...props}
+      navigate={useNavigate()}
+      location={useLocation()}
+      {...useContext(AppContext)}
+    />
+  )
 }

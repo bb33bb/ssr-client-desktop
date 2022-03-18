@@ -17,16 +17,3 @@
 .proxy-icon {
   @apply cursor-pointer text-blue-500 w-8 h-8 border-2 border-blue-500 rounded-full flex items-center justify-center hover:text-blue-700 transition;
 }
-
-@keyframes jumpIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.tooltip-custom {
-  animation: jumpIn 0.3s;
-}

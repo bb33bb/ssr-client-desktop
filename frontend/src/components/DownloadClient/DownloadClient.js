@@ -1,5 +1,6 @@
-import React, { Component } from "react"
+import React, { Component, useContext } from "react"
 import { useNavigate } from "react-router-dom"
+import AppContext from "../../contexts/AppContext"
 import DownloadModal from "../DownloadModal/DownloadModal"
 
 class DownloadClient extends Component {
@@ -168,8 +169,12 @@ class DownloadClient extends Component {
   }
 }
 
-export default function (props) {
-  const navigate = useNavigate()
-
-  return <DownloadClient {...props} navigate={navigate} />
+export default (props) => {
+  return (
+    <DownloadClient
+      {...props}
+      navigate={useNavigate()}
+      {...useContext(AppContext)}
+    />
+  )
 }

@@ -1,14 +1,9 @@
-import {
-  Add,
-  PlayArrow,
-  Stop,
-  Delete,
-  Edit,
-} from "@material-ui/icons"
-import { Component } from "react"
+import { Add, PlayArrow, Stop, Delete, Edit } from "@material-ui/icons"
+import { Component, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import "./ProxyList.css"
 import "tw-elements"
+import AppContext from "../../contexts/AppContext"
 
 class ProxyList extends Component {
   constructor(props) {
@@ -230,8 +225,12 @@ class ProxyList extends Component {
   }
 }
 
-export default function (props) {
-  const navigate = useNavigate()
-
-  return <ProxyList {...props} navigate={navigate} />
+export default (props) => {
+  return (
+    <ProxyList
+      {...props}
+      navigate={useNavigate()}
+      {...useContext(AppContext)}
+    />
+  )
 }
