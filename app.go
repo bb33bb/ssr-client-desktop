@@ -60,25 +60,27 @@ func (b *App) startup(ctx context.Context) {
 		runtime.EventsEmit(b.ctx, "run-log", id, time, _type, message)
 	})
 	b.proxyHandler.Start(b.ctx, b.dbHandler)
-	systray.Run(func() {
-		systray.SetIcon(Icon)
-		systray.SetTitle(APP_TITLE)
-		systray.SetTooltip(APP_TITLE)
-		mOpen := systray.AddMenuItem(fmt.Sprintf("Show %s", APP_TITLE), "Show App")
-		mQuit := systray.AddMenuItem("Exit", "Exit app")
-		go func() {
-			for {
-				select {
-				case <-mQuit.ClickedCh:
-					systray.Quit()
-				case <-mOpen.ClickedCh:
-					runtime.WindowShow(b.ctx)
+	go func() {
+		systray.Run(func() {
+			systray.SetIcon(Icon)
+			systray.SetTitle(APP_TITLE)
+			systray.SetTooltip(APP_TITLE)
+			mOpen := systray.AddMenuItem(fmt.Sprintf("Show %s", APP_TITLE), "Show App")
+			mQuit := systray.AddMenuItem("Exit", "Exit app")
+			go func() {
+				for {
+					select {
+					case <-mQuit.ClickedCh:
+						systray.Quit()
+					case <-mOpen.ClickedCh:
+						runtime.WindowShow(b.ctx)
+					}
 				}
-			}
-		}()
-	}, func() {
-		runtime.Quit(b.ctx)
-	})
+			}()
+		}, func() {
+			runtime.Quit(b.ctx)
+		})
+	}()
 }
 
 // domReady is called after the front-end dom has been loaded

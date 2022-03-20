@@ -33,6 +33,9 @@ class Logs extends Component {
   }
 
   componentDidMount() {
+    // this.timer = setInterval(() => {
+    //   this.onEvent(0, null, "out", "New Log! " + Date.now())
+    // }, 300)
     if (!window.go) return
     ;(async () => {
       const logs = await window.go.main.App.GetLogs(
@@ -50,8 +53,19 @@ class Logs extends Component {
   }
 
   componentWillUnmount() {
+    // clearInterval(this.timer)
     if (!window.runtime) return
     window.runtime.EventsOff("run-log")
+  }
+
+  componentDidUpdate() {
+    let div = document.querySelector(".app-content")
+    let isScrolledToBottom =
+      div.scrollHeight - div.clientHeight <=
+      div.scrollTop + div.offsetHeight * 0.25
+    if (isScrolledToBottom) {
+      div.scrollTop = div.scrollHeight - div.clientHeight
+    }
   }
 
   render() {
@@ -60,9 +74,7 @@ class Logs extends Component {
         {this.state.logs.map((item) => {
           return (
             <div className="log text-xs p-1">
-              <p>
-                {new Date(item.time).toLocaleString()} {">"} {item.message}
-              </p>
+              <p>{item.message}</p>
             </div>
           )
         })}
