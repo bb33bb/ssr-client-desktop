@@ -60,12 +60,12 @@ class Logs extends Component {
 
   componentDidUpdate() {
     let div = document.querySelector(".app-content")
-    let isScrolledToBottom =
-      div.scrollHeight - div.clientHeight <=
-      div.scrollTop + div.offsetHeight * 0.25
-    if (isScrolledToBottom) {
+    // let isScrolledToBottom =
+    //   div.scrollHeight - div.clientHeight <=
+    //   div.scrollTop + div.offsetHeight * 0.25
+    // if (isScrolledToBottom) {
       div.scrollTop = div.scrollHeight - div.clientHeight
-    }
+    // }
   }
 
   render() {
